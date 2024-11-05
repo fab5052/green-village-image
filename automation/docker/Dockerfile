@@ -66,5 +66,12 @@ RUN apt-get clean \
 COPY ./automation/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+FROM alpine:3.15
+
+COPY entrypoint.sh /usr/bin/entrypoint
+RUN chmod +x /usr/bin/entrypoint
+
+ENTRYPOINT ["entrypoint"]
+
 # Run
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
