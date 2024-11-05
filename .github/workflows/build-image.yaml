@@ -1,4 +1,4 @@
- File: calculate-pi-image/.github/workflows/build-image.yaml
+ File: green-village-image/.github/workflows/build-image.yaml
 
  name: Publish Docker image
  
