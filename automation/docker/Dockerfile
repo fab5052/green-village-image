@@ -4,7 +4,7 @@
 FROM php:8.3.7-apache-bookworm
 
 # Define workdir
-WORKDIR /var/www/html
+WORKDIR /var/www/
     
 # Softwares
 RUN apt-get update && apt-get install -y \
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     nano \
     wget \
     zip\
-    git-all
+    git
 
 # Apache modules
 RUN a2enmod \
@@ -42,6 +42,12 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash \
     && chmod +x /root/.symfony5/bin/symfony \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
+RUN apt update && apt install-yqqnodejs npm
+
+COPY ./var/www/
+
+COPY ./docker/apache.conf /etc/apache2/sites-avaible/000-default.conf
+
 # Composer
 COPY ./automation/scripts/composer-setup.sh /tmp
 RUN bash /tmp/composer-setup.sh
@@ -66,6 +72,9 @@ RUN apt-get clean \
 COPY ./automation/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# Run
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
+
 FROM alpine:3.15
 
 COPY entrypoint.sh /usr/bin/entrypoint
@@ -73,5 +82,3 @@ RUN chmod +x /usr/bin/entrypoint
 
 ENTRYPOINT ["entrypoint"]
 
-# Run
-CMD ["/usr/local/bin/docker-entrypoint.sh"]
